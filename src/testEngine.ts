@@ -1,18 +1,14 @@
-import { seedModules } from "./lib/seedData";
-import { runModuleEngineForAll } from "./lib/engines/moduleIntelligence";
+import { seedAssessments } from "./lib/seedAssessments";
+import { runPerformanceEngine } from "./lib/engines/performanceTracking";
 
-// Pretend we're in week 6 of a 12-week semester
-const currentWeek = 6;
-
-const results = runModuleEngineForAll(seedModules, currentWeek);
-
-console.log(`--- Module Engine Output (Week ${currentWeek}) ---`);
-for (const r of results) {
-  const module = seedModules.find((m) => m.id === r.moduleId);
+console.log(`\n--- Performance Engine Output ---`);
+const moduleIds = [...new Set(seedAssessments.map((a) => a.moduleId))];
+for (const moduleId of moduleIds) {
+  const assessments = seedAssessments.filter((a) => a.moduleId === moduleId);
+  const perf = runPerformanceEngine(moduleId, assessments);
   console.log(
-    `${module?.code} (${module?.name})\n` +
-    `  demand: ${r.currentWeekDemand.toFixed(2)}  ` +
-    `difficulty: ${r.difficultyScaling.toFixed(2)}  ` +
-    `session: ${r.recommendedSessionMinutes} min\n`
+    `${moduleId}\n` +
+    `  predicted: ${perf.predictedFinalMark}%  gap: ${perf.requiredImprovementGap > 0 ? "+" : ""}${perf.requiredImprovementGap}  ` +
+    `risk: ${perf.riskLevel}  weakest: ${perf.weakestAssessmentType ?? "n/a"}\n`
   );
 }

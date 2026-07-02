@@ -34,3 +34,22 @@ export interface ModuleEngineOutput {
   difficultyScaling: number;      // multiplier to apply when scheduling time for this module
   recommendedSessionMinutes: number; // time-efficiency parameter
 }
+
+export type AssessmentType = "test" | "assignment" | "exam" | "practical";
+
+export interface Assessment {
+  id: string;
+  moduleId: string;
+  name: string;              // e.g. "Test 1", "Practical 3"
+  type: AssessmentType;
+  weight: number;             // as a fraction of final mark, e.g. 0.15 for 15%
+  currentMark: number | null; // percentage, null if not yet written/marked
+}
+
+export interface ModulePerformance {
+  moduleId: string;
+  predictedFinalMark: number;      // weighted projection, 0-100
+  requiredImprovementGap: number;  // target - predicted, can be negative (ahead of target)
+  riskLevel: RiskLevel;
+  weakestAssessmentType: AssessmentType | null;
+}
