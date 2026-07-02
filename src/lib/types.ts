@@ -65,3 +65,12 @@ export interface Task {
   status: TaskStatus;
   estimatedMinutes: number | null; // optional — freeform for now, scheduler falls back to a default if missing
 }
+
+export interface PrioritizedTask {
+  taskId: string;
+  title: string;
+  score: number;
+  urgencyScore: number;
+  importanceScore: number;
+  effortPressureScore: number;
+}
