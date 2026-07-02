@@ -53,3 +53,15 @@ export interface ModulePerformance {
   riskLevel: RiskLevel;
   weakestAssessmentType: AssessmentType | null;
 }
+
+
+export type TaskStatus = "todo" | "in-progress" | "done";
+
+export interface Task {
+  id: string;
+  moduleId: string | null;      // null = general task, not tied to a specific module
+  title: string;
+  deadline: string | null;      // ISO date string, e.g. "2026-07-10", null = no deadline
+  status: TaskStatus;
+  estimatedMinutes: number | null; // optional — freeform for now, scheduler falls back to a default if missing
+}

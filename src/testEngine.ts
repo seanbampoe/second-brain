@@ -12,3 +12,16 @@ for (const moduleId of moduleIds) {
     `risk: ${perf.riskLevel}  weakest: ${perf.weakestAssessmentType ?? "n/a"}\n`
   );
 }
+
+import { seedTasks } from "./lib/seedTasks";
+import { getOpenTasks, getOverdueTasks, daysUntilDeadline } from "./lib/engines/taskSystem";
+
+const today = "2026-07-02";
+
+console.log(`\n--- Task System Output ---`);
+console.log(`Open tasks: ${getOpenTasks(seedTasks).length}`);
+console.log(`Overdue tasks: ${getOverdueTasks(seedTasks, today).length}`);
+for (const t of seedTasks) {
+  const days = daysUntilDeadline(t, today);
+  console.log(`  [${t.status}] ${t.title} — ${days === null ? "no deadline" : `${days} day(s)`}`);
+}
